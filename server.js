@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 // require route files
-const exampleRoutes = require('./app/routes/example_routes')
+const hikeRoutes = require('./app/routes/hike_routes')
 const userRoutes = require('./app/routes/user_routes')
 
 // require middleware
@@ -61,12 +61,13 @@ app.use(express.urlencoded({ extended: true }))
 app.use(requestLogger)
 
 // register route files
-app.use(exampleRoutes)
+app.use(hikeRoutes)
 app.use(userRoutes)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be
 // passed any error messages from them
+app.get('/', (req, res) => res.send('Hiking app is up!'))
 app.use(errorHandler)
 
 // run API on designated port (4741 in this case)
