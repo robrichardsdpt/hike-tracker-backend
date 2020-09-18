@@ -30,7 +30,11 @@ const router = express.Router()
 // INDEX
 // GET /hikes
 router.get('/hikes', requireToken, (req, res, next) => {
-  Hike.find()
+  // find owner id through use of Token
+  // make variable for user id {owner: user_id}
+  console.log(req.user._id)
+  const userId = req.user._id
+  Hike.find({owner: userId})
     .populate('owner')
     .then(hikes => {
       // `hikes` will be an array of Mongoose documents
@@ -49,11 +53,13 @@ router.get('/hikes', requireToken, (req, res, next) => {
 router.get('/hikes/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   Hike.findById(req.params.id)
-    .then(handle404)
     .populate('owner')
+    .then(handle404)
+    .then(hike => requireOwnership(req, hike))
     // if `findById` is succesful, respond with 200 and "hike" JSON
     .then(hike => res.status(200).json({ hike: hike.toObject() }))
     // if an error occurs, pass it to the handler
+    // .then(requireOwnership(userID, hikeOwner))
     .catch(next)
 })
 
