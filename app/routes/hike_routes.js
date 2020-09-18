@@ -55,7 +55,13 @@ router.get('/hikes/:id', requireToken, (req, res, next) => {
   Hike.findById(req.params.id)
     .populate('owner')
     .then(handle404)
-    .then(hike => requireOwnership(req, hike))
+    .then(hike => {
+      // pass the `req` object and the Mongoose record to `requireOwnership`
+      // it will throw an error if the current user isn't the owner
+      requireOwnership(req, hike)
+      // pass the result of Mongoose's `.update` to the next `.then`
+      return hike
+    })
     // if `findById` is succesful, respond with 200 and "hike" JSON
     .then(hike => res.status(200).json({ hike: hike.toObject() }))
     // if an error occurs, pass it to the handler
