@@ -1,204 +1,43 @@
 [![General Assembly Logo](https://camo.githubusercontent.com/1a91b05b8f4d44b5bbfb83abac2b0996d8e26c92/687474703a2f2f692e696d6775722e636f6d2f6b6538555354712e706e67)](https://generalassemb.ly/education/web-development-immersive)
 
-# express-api-template
+# Hike log
+This repo is the database side to a hiking log that allows a user access to his/her own individual, private database of hikes.  They can create, search for, update, and delete hikes that they have completed.  This can be a valuable resource for anyone trying to complete a hiking challenge, recommend hikes to others, or just keep a journal of their adventures.
 
-A template for starting projects with `express` as an API. Includes
-authentication and common middlewares.
+## Planning Story
+The idea for this database came from my own personal journey of collecting the 48 4000 foot peaks in New Hampshire.  I derived the data obtained based on the requirements of the AMC and useful numbers that I used to track data.  Since the information gathered were to be specific to a user, I decided to work on the auth features first.
 
-## Installation
+The auth features were very straight forward on this project.  They included sign in, sign up, sign out, and change password.  Hashing of passwords allowed for increased safety on this project.  In addition, the use of tokens allows the user to ensure that their data is protected and strictly for their use only.  A user model was created to store the user's data through mongoose and mongoDB.  This included email, hashedPassword, and token.  The token is a unique string that is generated for the user each individual session.  The hashed password is created with bcrypt and was set to 10 salt rounds for encryption.
 
-1. [Download](../../archive/master.zip) this template.
-1. Move the .zip file to your `sei/projects/` directory and Unzip it (creating a
-   folder) -- **NOTE:** if the folder was already unzipped, use the `mv` command
-   line to move it to the `sei/projects/` directory.
-1. Rename the directory from express-api-template -> your-app-name.
-1. Empty [`README.md`](README.md) and fill with your own content.
-1. Move into the new project and `git init`.
-1. Replace all instances of `'express-api-template'` with your app name.
-1. Install dependencies with `npm install`.
-1. Ensure that you have `nodemon` installed by running `npm install -g nodemon`.
-1. Ensure the API is functioning properly by running `npm run server`.
-1. Once everything is working, make an initial commit.
-1. Follow the steps in [express-api-deployment-guide](https://git.generalassemb.ly/ga-wdi-boston/express-api-deployment-guide)
+The next goal was to create the hike model. This included the date, trails, distance, elevation, time taken, mountains climbed, trail notes, and who they hiked with.  I decided to make only the date and trails required, as that is the basic information that would be available for a hike (ie. the person may not have the technology to gather elevation or distance).  All of this data was tied to a User who created the hike.
 
-## Structure
+The routes were then the next focus.  The auth routes required a post for sign up, a post for sign-in, a patch for change password, and a delete for sign-out.  Promises were used for these requests, and proper error handling was attached to each.  The use of token was used to handle each individual session.
 
-Dependencies are stored in [`package.json`](package.json).
+The hike routes required get requests for index retrieval and to show by ID, a post to create a new hike, a patch to update a hike, and a delete/destroy to delete a hike.  Each route was focused on resource management for the user by using the user ID and comparing it to the owner of the hike.
 
-The most important file for understanding the structure of the template is
-`server.js`. This is where the actual Express `app` object is created, where
-the middlewares and routes are registered, and more. To register a routefile,
-follow the pattern established here with `exampleRoutes` and `userRoutes`. If
-you want to add any middlewares to your app, do that here.
 
-The `app` directory contains models and route files. Models are simply Mongoose
-models. To create your own, follow the patterns established in
-`app/models/example.js`. Route files are somewhat similar to controllers in
-Rails, but they cover more functionality, including serialization and deciding
-which HTTP verbs to accept and what to do with them.
+### User Stories
+    1. As a user, I want to be able to sign in to my own secure account so that I can track my own hikes.
+    2. As a user, I want to be able to track the mountains I have climbed and take notes on them.
+    3. As a user, I would like to save all of my data and return to it later so that I can fill out applications for patches.
+    4. As a user, I would like to modify any input at a later date, so that I do not have to do it all at once.
+    5. As a user, I want to be able to look up previous trail notes I took and data recorded so I can refer to this information when recommending hikes to others.
 
-The `config` directory holds just `db.js`, which is where you specify the name
-and URL of your database.
+### Technologies used
+    1. html
+    2. JavaScript
+    3. CSS/sass
+    4. jquery
+    5. Bootstrap
+    6. json
+    7. MongoDB
+    8. Mongoose
+    9. ExpressJS
+    10. Bcrypt
+    11. PassportJS
 
-The `lib` directory is for code that will be used in other places in the
-application. The token authentication code is stored in `lib/auth.js`. The
-other files in `lib` deal with error handling. `custom_errors.js` is where all
-the different custom classes of errors are created. If you need some other kind
-of error message, you can add it here. There are also some functions defined
-here that are used elsewhere to check for errors. `lib/error_handler.js` is a
-function that will be used in all your `.catch`es. It catches errors, and sets
-the response status code based on what type of error got thrown.
+### Unsolved Problems/Reach goals
+    - Search functionality to include search by trail, mountain
+    - Statistics and other data tracking methods (filling in mountains into lists to show user how many more they need to accomplish goals)
 
-You probably will only need to interact with files in `app/models`,
-`app/routes`, and `server.js`. You'll need to edit `db/config.js` just once,
-to change the name of your app.
-
-## Tasks
-
-Instead of `grunt`, this template uses `npm` as a task runner. This is more
-conventional for modern Express apps, and it's handy because we'll definitely
-use `npm` anyway. These are the commands available:
-
-| Command                | Effect                                                                                                      |
-|------------------------|-------------------------------------------------------------------------------------------------------------|
-| `npm run server`       | Starts a development server with `nodemon` that automatically refreshes when you change something.                                                                                         |
-| `npm test`             | Runs automated tests.                                                                                       |
-| `npm run debug-server` | Starts the server in debug mode, which will print lots of extra info about what's happening inside the app. |
-
-## API
-
-Use this as the basis for your own API documentation. Add a new third-level
-heading for your custom entities, and follow the pattern provided for the
-built-in user authentication documentation.
-
-Scripts are included in [`curl-scripts`](curl-scripts) to test built-in actions.
-Add your own scripts to test your custom API.
-
-### Authentication
-
-| Verb   | URI Pattern            | Controller#Action |
-|--------|------------------------|-------------------|
-| POST   | `/sign-up`             | `users#signup`    |
-| POST   | `/sign-in`             | `users#signin`    |
-| PATCH  | `/change-password/` | `users#changepw`  |
-| DELETE | `/sign-out/`        | `users#signout`   |
-
-#### POST /sign-up
-
-Request:
-
-```sh
-curl --include --request POST http://localhost:4741/sign-up \
-  --header "Content-Type: application/json" \
-  --data '{
-    "credentials": {
-      "email": "an@example.email",
-      "password": "an example password",
-      "password_confirmation": "an example password"
-    }
-  }'
-```
-
-```sh
-curl-scripts/sign-up.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 201 Created
-Content-Type: application/json; charset=utf-8
-
-{
-  "user": {
-    "id": 1,
-    "email": "an@example.email"
-  }
-}
-```
-
-#### POST /sign-in
-
-Request:
-
-```sh
-curl --include --request POST http://localhost:4741/sign-in \
-  --header "Content-Type: application/json" \
-  --data '{
-    "credentials": {
-      "email": "an@example.email",
-      "password": "an example password"
-    }
-  }'
-```
-
-```sh
-curl-scripts/sign-in.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-
-{
-  "user": {
-    "id": 1,
-    "email": "an@example.email",
-    "token": "33ad6372f795694b333ec5f329ebeaaa"
-  }
-}
-```
-
-#### PATCH /change-password/
-
-Request:
-
-```sh
-curl --include --request PATCH http://localhost:4741/change-password/ \
-  --header "Authorization: Bearer $TOKEN" \
-  --header "Content-Type: application/json" \
-  --data '{
-    "passwords": {
-      "old": "an example password",
-      "new": "super sekrit"
-    }
-  }'
-```
-
-```sh
-TOKEN=33ad6372f795694b333ec5f329ebeaaa curl-scripts/change-password.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 204 No Content
-```
-
-#### DELETE /sign-out/
-
-Request:
-
-```sh
-curl --include --request DELETE http://localhost:4741/sign-out/ \
-  --header "Authorization: Bearer $TOKEN"
-```
-
-```sh
-TOKEN=33ad6372f795694b333ec5f329ebeaaa curl-scripts/sign-out.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 204 No Content
-```
-
-## [License](LICENSE)
-
-1. All content is licensed under a CC­BY­NC­SA 4.0 license.
-1. All software code is licensed under GNU GPLv3. For commercial use or
-    alternative licensing, please contact legal@ga.co.
-# hike-tracker-backend
+## Images
+![ERD](https://imgur.com/a/EPhOMmR)

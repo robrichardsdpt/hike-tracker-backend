@@ -49,7 +49,7 @@ router.get('/hikes', requireToken, (req, res, next) => {
 })
 
 // SHOW
-// GET /hikes/5a7db6c74d55bc51bdf39793
+// GET
 router.get('/hikes/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   Hike.findById(req.params.id)
@@ -65,7 +65,6 @@ router.get('/hikes/:id', requireToken, (req, res, next) => {
     // if `findById` is succesful, respond with 200 and "hike" JSON
     .then(hike => res.status(200).json({ hike: hike.toObject() }))
     // if an error occurs, pass it to the handler
-    // .then(requireOwnership(userID, hikeOwner))
     .catch(next)
 })
 
@@ -110,7 +109,7 @@ router.patch('/hikes/:id', requireToken, removeBlanks, (req, res, next) => {
 })
 
 // DESTROY
-// DELETE /hikes/5a7db6c74d55bc51bdf39793
+// DELETE
 router.delete('/hikes/:id', requireToken, (req, res, next) => {
   Hike.findById(req.params.id)
     .then(handle404)
