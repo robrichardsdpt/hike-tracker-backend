@@ -40,4 +40,4 @@ The hike routes required get requests for index retrieval and to show by ID, a p
     - Statistics and other data tracking methods (filling in mountains into lists to show user how many more they need to accomplish goals)
 
 ## Images
-![ERD](https://imgur.com/a/EPhOMmR)
+![ERD](https://user-images.githubusercontent.com/53917811/93946171-8ae33a80-fd06-11ea-9d93-15bed7e1dda5.jpg)
