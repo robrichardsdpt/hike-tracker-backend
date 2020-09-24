@@ -35,9 +35,15 @@ The hike routes required get requests for index retrieval and to show by ID, a p
     10. Bcrypt
     11. PassportJS
 
+### Links
+[Depoloyed Frontend](https://robrichardsdpt.github.io/hike-tracker-client/) <br>
+[Deployed Backend](https://stormy-plains-65398.herokuapp.com/) <br>
+[Frontend Github Repository](https://github.com/robrichardsdpt/hike-tracker-client)<br>
+[Backend Github Repository](https://github.com/robrichardsdpt/hike-tracker-backend)  
+
 ### Unsolved Problems/Reach goals
     - Search functionality to include search by trail, mountain
     - Statistics and other data tracking methods (filling in mountains into lists to show user how many more they need to accomplish goals)
 
 ## Images
-![ERD](https://user-images.githubusercontent.com/53917811/93949706-588a0b00-fd0f-11ea-8254-d4745e6c852e.jpg)
+![ERD](https://i.imgur.com/Yhay5xh.jpg)
