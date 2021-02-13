@@ -29,23 +29,25 @@ const router = express.Router()
 
 // INDEX
 // GET /hikes
-router.get('/hikes', requireToken, (req, res, next) => {
-  // find owner id through use of Token
-  // make variable for user id {owner: user_id}
-  console.log(req.user._id)
-  const userId = req.user._id
-  Hike.find({owner: userId})
-    .populate('owner')
-    .then(hikes => {
-      // `hikes` will be an array of Mongoose documents
-      // we want to convert each one to a POJO, so we use `.map` to
-      // apply `.toObject` to each one
-      return hikes.map(hike => hike.toObject())
-    })
-    // respond with status 200 and JSON of the hikes
-    .then(hikes => res.status(200).json({ hikes: hikes }))
-    // if an error occurs, pass it to the handler
-    .catch(next)
+router.get('/hikes', (req, res, next) => {
+  console.log(req.query)
+  if (req.query.owner !== 'all'){
+    Post.find({owner:req.query.owner})
+      .then(posts => {
+        console.log(posts)
+        return posts.map(post => post.toObject())
+      })
+      .then(posts => res.status(200).json({ posts: posts }))
+      .catch(next)
+  } else {
+    Post.find()
+      .populate('owner')
+      .then(posts => {
+        return posts.map(post => post.toObject())
+      })
+      .then(posts => res.status(200).json({ posts: posts }))
+      .catch(next)
+  }
 })
 
 // SHOW
