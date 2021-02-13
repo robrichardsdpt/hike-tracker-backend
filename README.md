@@ -47,3 +47,4 @@ The hike routes required get requests for index retrieval and to show by ID, a p
 
 ## Images
 ![ERD](https://i.imgur.com/Yhay5xh.jpg)
+# hike-tracker-backend-v2
