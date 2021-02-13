@@ -138,4 +138,31 @@ router.delete('/sign-out', requireToken, (req, res, next) => {
     .catch(next)
 })
 
+// INDEX
+// GET /users
+router.get('/users', (req, res, next) => {
+  User.find()
+    .then(users => {
+      return users.map(user => user.toObject())
+    })
+    .then(users => res.status(200).json({ users: users }))
+    .catch(next)
+})
+
+router.patch('/users/:id', requireToken, (req, res, next) => {
+  // if the client attempts to change the `owner` property by including a new
+  // owner, prevent that by deleting that key/value pair
+  User.findById(req.user.id)
+    .then(user => {
+      // pass the `req` object and the Mongoose record to `requireOwnership`
+      // pass the result of Mongoose's `.update` to the next `.then`
+      user['profileImage'] = req.body.profileImage
+      return user.save()
+    })
+    // if that succeeded, return 204 and no JSON
+    .then(() => res.sendStatus(204))
+    // if an error occurs, pass it to the handler
+    .catch(next)
+})
+
 module.exports = router
