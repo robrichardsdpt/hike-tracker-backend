@@ -32,20 +32,21 @@ const router = express.Router()
 router.get('/hikes', (req, res, next) => {
   console.log(req.query)
   if (req.query.owner !== 'all'){
-    Post.find({owner:req.query.owner})
-      .then(posts => {
-        console.log(posts)
-        return posts.map(post => post.toObject())
+    Hike.find({owner:req.query.owner})
+      .populate('owner')
+      .then(hikes => {
+        console.log(hikes)
+        return hikes.map(hike => hike.toObject())
       })
-      .then(posts => res.status(200).json({ posts: posts }))
+      .then(hikes => res.status(200).json({ hikes: hikes }))
       .catch(next)
   } else {
-    Post.find()
+    Hike.find()
       .populate('owner')
-      .then(posts => {
-        return posts.map(post => post.toObject())
+      .then(hikes => {
+        return hikes.map(hike => hike.toObject())
       })
-      .then(posts => res.status(200).json({ posts: posts }))
+      .then(hikes => res.status(200).json({ hikes: hikes }))
       .catch(next)
   }
 })

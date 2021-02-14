@@ -18,7 +18,7 @@ const hikeSchema = new mongoose.Schema({
     required: false
   },
   timeTaken: {
-    type: Number,
+    type: String,
     required: false
   },
   mountainsClimbed: {
@@ -30,6 +30,14 @@ const hikeSchema = new mongoose.Schema({
     required: false
   },
   hikedWith: {
+    type: String,
+    required: false
+  },
+  picture: {
+    type: String,
+    required: false
+  },
+  rating: {
     type: String,
     required: false
   },
