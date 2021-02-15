@@ -56,7 +56,6 @@ router.get('/hikes', (req, res, next) => {
 router.get('/hikes/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   Hike.findById(req.params.id)
-    .populate('owner')
     .then(handle404)
     .then(hike => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
