@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
+  profileImage: {
+    type: String,
+  },
   email: {
     type: String,
     required: true,
@@ -9,10 +12,6 @@ const userSchema = new mongoose.Schema({
   hashedPassword: {
     type: String,
     required: true
-  },
-  profileImage: {
-    type: String,
-    required: false
   },
   token: String
 }, {
